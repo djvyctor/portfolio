@@ -1,3 +1,10 @@
+// Force scroll to top on page load
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+    }, 0);
+});
+
 // Mobile Menu Toggle
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
@@ -98,22 +105,15 @@ if (navBrandLink) {
     // Trigger on hover
     navBrandLink.addEventListener('mouseenter', glitchText);
 
-    // Auto-glitch every 8 seconds
-    setInterval(() => {
-        if (!isAnimating) {
-            glitchText();
-        }
-    }, 8000);
-
     // Initial glitch after page load
     setTimeout(glitchText, 1000);
 }
 
-// Language Toggle
+// Language Toggle - Global variable
+let currentLang = 'pt'; // Default language (shared with terminal)
+
 const langToggle = document.getElementById('langToggle');
 if (langToggle) {
-    let currentLang = 'pt'; // Default language
-
     langToggle.addEventListener('click', () => {
         // Toggle language
         currentLang = currentLang === 'pt' ? 'en' : 'pt';
@@ -147,6 +147,207 @@ if (langToggle) {
     });
 }
 
+// Interactive Terminal
+const terminalInput = document.getElementById('terminalInput');
+const terminalBody = document.getElementById('terminalBody');
+
+if (terminalInput && terminalBody) {
+    // Focus input when clicking anywhere in terminal
+    terminalBody.addEventListener('click', () => {
+        terminalInput.focus();
+    });
+
+    // Command history
+    let commandHistory = [];
+    let historyIndex = -1;
+
+    // Terminal responses (uses global currentLang)
+    const responses = {
+        pt: {
+            help: `Comandos disponíveis:
+  <span class="success">sudo apt sobre</span>  - Informações sobre mim
+  <span class="success">ls</span>             - Lista seções do portfolio
+  <span class="success">whoami</span>         - Informações rápidas
+  <span class="success">skills</span>         - Minhas habilidades
+  <span class="success">clear</span>          - Limpa o terminal
+  <span class="success">help</span>           - Mostra esta mensagem`,
+            sobre: `<span class="success">[sudo] senha para visitor: ********</span>
+<span class="success">Lendo pacotes... Pronto</span>
+<span class="success">Acesso liberado!</span>
+
+Olá! Sou Victor Medeiros, desenvolvedor e entusiasta de segurança cibernética.
+
+Minha jornada na tecnologia começou com a curiosidade de entender como as coisas funcionam 
+por baixo dos panos. Hoje, combino programação e segurança para criar soluções robustas e seguras.
+
+Especialidades:
+  • Desenvolvimento Full-Stack
+  • Segurança de Aplicações
+  • Pentesting & Ethical Hacking
+  • DevSecOps
+
+Sempre em busca de novos desafios e aprendizados!`,
+            ls: `Seções disponíveis:
+  <span class="info">sobre/</span>
+  <span class="info">experiencia/</span>
+  <span class="info">projetos/</span>
+  <span class="info">habilidades/</span>
+  <span class="info">contato/</span>`,
+            whoami: `<span class="success">Victor Medeiros</span>
+Cybersecurity Enthusiast | Full-Stack Developer
+GitHub: github.com/djvyctor
+LinkedIn: linkedin.com/in/victordevsec`,
+            skills: `Habilidades principais:
+  <span class="success">✓</span> Python, JavaScript, FastAPI
+  <span class="success">✓</span> Segurança de Aplicações
+  <span class="success">✓</span> Linux, Docker, Git
+  <span class="success">✓</span> Pentesting & CTFs
+  <span class="success">✓</span> HTML, CSS, React`,
+            clear: 'CLEAR',
+            error: (cmd) => `<span class="error">bash: ${cmd}: comando não encontrado</span>
+Digite 'help' para ver os comandos disponíveis.`
+        },
+        en: {
+            help: `Available commands:
+  <span class="success">sudo apt sobre</span>  - About me information
+  <span class="success">ls</span>             - List portfolio sections
+  <span class="success">whoami</span>         - Quick information
+  <span class="success">skills</span>         - My skills
+  <span class="success">clear</span>          - Clear terminal
+  <span class="success">help</span>           - Show this message`,
+            sobre: `<span class="success">[sudo] password for visitor: ********</span>
+<span class="success">Reading packages... Done</span>
+<span class="success">Access granted!</span>
+
+Hello! I'm Victor Medeiros, a developer and cybersecurity enthusiast.
+
+My journey in technology started with curiosity about how things work under the hood.
+Today, I combine programming and security to create robust and secure solutions.
+
+Specialties:
+  • Full-Stack Development
+  • Application Security
+  • Pentesting & Ethical Hacking
+  • DevSecOps
+
+Always seeking new challenges and learning opportunities!`,
+            ls: `Available sections:
+  <span class="info">about/</span>
+  <span class="info">experience/</span>
+  <span class="info">projects/</span>
+  <span class="info">skills/</span>
+  <span class="info">contact/</span>`,
+            whoami: `<span class="success">Victor Medeiros</span>
+Cybersecurity Enthusiast | Full-Stack Developer
+GitHub: github.com/djvyctor
+LinkedIn: linkedin.com/in/victordevsec`,
+            skills: `Main skills:
+  <span class="success">✓</span> Python, JavaScript, FastAPI
+  <span class="success">✓</span> Application Security
+  <span class="success">✓</span> Linux, Docker, Git
+  <span class="success">✓</span> Pentesting & CTFs
+  <span class="success">✓</span> HTML, CSS, React`,
+            clear: 'CLEAR',
+            error: (cmd) => `<span class="error">bash: ${cmd}: command not found</span>
+Type 'help' to see available commands.`
+        }
+    };
+
+    // Update language when toggle changes
+    const langToggleBtn = document.getElementById('langToggle');
+    if (langToggleBtn) {
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = langToggleBtn.textContent === 'PT' ? 'en' : 'pt';
+        });
+    }
+
+    function addOutput(text, className = '') {
+        const output = document.createElement('div');
+        output.className = `terminal-output ${className}`;
+        output.innerHTML = text;
+        
+        // Insert before the input line
+        const inputLine = terminalBody.querySelector('.terminal-line');
+        terminalBody.insertBefore(output, inputLine);
+        
+        // Scroll to bottom
+        terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    function processCommand(command) {
+        const cmd = command.trim().toLowerCase();
+        
+        // Add command to history
+        if (cmd) {
+            commandHistory.unshift(cmd);
+            historyIndex = -1;
+        }
+
+        // Show command in terminal
+        addOutput(`<span class="terminal-prompt">visitor@portfolio:~$</span> ${command}`);
+
+        // Process command
+        if (cmd === 'clear') {
+            // Clear terminal except welcome message
+            const welcome = terminalBody.querySelector('.terminal-welcome');
+            const inputLine = terminalBody.querySelector('.terminal-line');
+            terminalBody.innerHTML = '';
+            terminalBody.appendChild(welcome);
+            terminalBody.appendChild(inputLine);
+        } else if (cmd === 'sudo apt sobre' || cmd === 'sudo apt about') {
+            addOutput(responses[currentLang].sobre);
+        } else if (cmd === 'help') {
+            addOutput(responses[currentLang].help);
+        } else if (cmd === 'ls') {
+            addOutput(responses[currentLang].ls);
+        } else if (cmd === 'whoami') {
+            addOutput(responses[currentLang].whoami);
+        } else if (cmd === 'skills') {
+            addOutput(responses[currentLang].skills);
+        } else if (cmd === '') {
+            // Empty command, do nothing
+        } else {
+            addOutput(responses[currentLang].error(command));
+        }
+
+        // Clear input
+        terminalInput.value = '';
+    }
+
+    // Handle enter key
+    terminalInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            processCommand(terminalInput.value);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (historyIndex < commandHistory.length - 1) {
+                historyIndex++;
+                terminalInput.value = commandHistory[historyIndex];
+            }
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (historyIndex > 0) {
+                historyIndex--;
+                terminalInput.value = commandHistory[historyIndex];
+            } else if (historyIndex === 0) {
+                historyIndex = -1;
+                terminalInput.value = '';
+            }
+        }
+    });
+
+    // Auto focus only when section is visible
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                terminalInput.focus();
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    observer.observe(terminalBody);
+}
+
 // Typewriter Effect
 const typewriterElement = document.getElementById('typewriter');
 if (typewriterElement) {
@@ -166,58 +367,6 @@ if (typewriterElement) {
     setTimeout(typeWriter, 500);
 }
 
-// Smart Scroll Button
-const scrollBtn = document.getElementById('scrollBtn');
-const scrollLink = document.getElementById('scrollLink');
-const scrollArrow = document.getElementById('scrollArrow');
-
-if (scrollBtn && scrollLink && scrollArrow) {
-    const sections = ['hero', 'sobre', 'experiencia', 'projetos', 'habilidades', 'contato'];
-    let currentSectionIndex = 0;
-
-    function updateScrollButton() {
-        const scrollPosition = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-
-        // Show button after scrolling 200px
-        if (scrollPosition > 200) {
-            scrollBtn.classList.add('show');
-        } else {
-            scrollBtn.classList.remove('show');
-        }
-
-        // Find current section
-        for (let i = sections.length - 1; i >= 0; i--) {
-            const section = document.getElementById(sections[i]);
-            if (section && scrollPosition >= section.offsetTop - 200) {
-                currentSectionIndex = i;
-                break;
-            }
-        }
-
-        // Check if at bottom of page
-        const isAtBottom = scrollPosition + windowHeight >= documentHeight - 100;
-
-        if (isAtBottom) {
-            // At bottom - go to top
-            scrollArrow.textContent = '↑';
-            scrollLink.href = '#hero';
-        } else if (currentSectionIndex < sections.length - 1) {
-            // Middle - go to next section
-            scrollArrow.textContent = '↓';
-            scrollLink.href = '#' + sections[currentSectionIndex + 1];
-        } else {
-            // At last section but not bottom - go to top
-            scrollArrow.textContent = '↑';
-            scrollLink.href = '#hero';
-        }
-    }
-
-    window.addEventListener('scroll', updateScrollButton);
-    updateScrollButton(); // Initial call
-}
-
 // Matrix Rain Effect - Invisible until Mouse Reveals
 const canvas = document.getElementById('matrixCanvas');
 if (canvas) {
@@ -227,15 +376,15 @@ if (canvas) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    // Matrix characters (binary + symbols)
-    const chars = '01アイウエオカキクケコサシスセソタチツテト';
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
+    // Matrix characters (binary + symbols) - Reduced for performance
+    const chars = '01';
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
     
     // Mouse position
     let mouseX = -1000;
     let mouseY = -1000;
-    const revealRadius = 200; // Area of reveal around cursor
+    const revealRadius = 150; // Reduced reveal radius
     
     // Matrix opacity based on scroll
     let matrixOpacity = 1;
@@ -248,6 +397,10 @@ if (canvas) {
         speeds[i] = 1; // Normal speed
     }
     
+    // Performance: Track last frame time
+    let lastFrameTime = 0;
+    const frameInterval = 100; // Slower refresh rate (was ~80ms in setInterval)
+    
     // Track mouse position
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
@@ -257,27 +410,46 @@ if (canvas) {
     // Matrix always visible (no scroll fade)
     matrixOpacity = 1;
     
-    function drawMatrix() {
+    function drawMatrix(currentTime) {
         // Only draw if opacity > 0
         if (matrixOpacity <= 0.01) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            requestAnimationFrame(drawMatrix);
             return;
         }
         
+        // Performance: Throttle frame rate
+        if (currentTime - lastFrameTime < frameInterval) {
+            requestAnimationFrame(drawMatrix);
+            return;
+        }
+        lastFrameTime = currentTime;
+        
         // Black background with slight transparency for trail effect
-        ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+        ctx.fillStyle = 'rgba(10, 10, 10, 0.15)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
         ctx.font = fontSize + 'px monospace';
         
-        // Draw characters
+        // Draw characters - Only process columns near mouse for better performance
         for (let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
             const x = i * fontSize;
             const y = drops[i] * fontSize;
             
-            // Calculate distance from mouse
+            // Skip columns far from mouse (optimization)
             const distanceX = Math.abs(mouseX - x);
+            if (distanceX > revealRadius + 50) {
+                // Still move the drop even if not visible
+                if (y > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i] += 1;
+                continue;
+            }
+            
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            
+            // Calculate distance from mouse
             const distanceY = Math.abs(mouseY - y);
             const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
             
@@ -287,15 +459,14 @@ if (canvas) {
                 const intensity = 1 - (distance / revealRadius);
                 speeds[i] = 1 + intensity * 2; // Speed up near cursor
                 
-                // Calculate opacity based on distance - invisible far, bright close
-                const charOpacity = Math.min(1, intensity * 1.5) * matrixOpacity; // Stronger opacity
-                const brightness = 255; // Full brightness
+                // Calculate opacity based on distance
+                const charOpacity = Math.min(1, intensity * 1.5) * matrixOpacity;
+                const brightness = 255;
                 
                 ctx.fillStyle = `rgba(0, ${brightness}, ${Math.floor(brightness * 0.53)}, ${charOpacity})`;
                 ctx.fillText(text, x, y);
             } else {
-                // Characters are invisible outside mouse radius
-                speeds[i] = 1; // Normal speed even when invisible
+                speeds[i] = 1;
             }
             
             // Reset drop to top randomly
@@ -306,10 +477,12 @@ if (canvas) {
             // Move drop with variable speed
             drops[i] += speeds[i];
         }
+        
+        requestAnimationFrame(drawMatrix);
     }
     
-    // Animation loop
-    setInterval(drawMatrix, 80);
+    // Start animation loop
+    requestAnimationFrame(drawMatrix);
     
     // Resize canvas on window resize
     window.addEventListener('resize', () => {

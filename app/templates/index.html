@@ -35,23 +35,36 @@
             </div>
             <h1 class="hero-title"><span class="translatable" data-pt="Olá, eu sou" data-en="Hello, I'm">Olá, eu sou</span> <span class="highlight">{{ dados.nome }}</span></h1>
             <h2 class="hero-subtitle translatable" id="typewriter" data-pt="{{ dados.titulo }}" data-en="Cybersecurity and Developer">{{ dados.titulo }}</h2>
-            <p class="hero-description translatable" data-pt="{{ dados.sobre }}" data-en="Passionate about technology, cybersecurity and software development.">{{ dados.sobre }}</p>
+            <p class="hero-description translatable" data-pt="{{ dados.sobre }}" data-en="Innovating with code. Protecting with purpose.">{{ dados.sobre }}</p>
             <div class="hero-buttons">
                 <a href="#contato" class="btn btn-primary translatable" data-pt="Entre em Contato" data-en="Get in Touch">Entre em Contato</a>
                 <a href="/static/cv/curriculo.pdf" class="btn btn-secondary translatable" download data-pt="Download CV" data-en="Download CV">Download CV</a>
-            </div>
-            <div class="scroll-indicator" id="scrollBtn">
-                <a href="#sobre" id="scrollLink">
-                    <span class="arrow" id="scrollArrow">↓</span>
-                </a>
             </div>
         </div>
     </section>
 
     <!-- Sobre Section -->
     <section id="sobre">
-        <h2>Sobre</h2>
-        <p>Conteúdo temporário</p>
+        <div class="container">
+            <h2 class="section-title translatable" data-pt="Sobre Mim" data-en="About Me">Sobre Mim</h2>
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="terminal-btn close"></span>
+                        <span class="terminal-btn minimize"></span>
+                        <span class="terminal-btn maximize"></span>
+                    </div>
+                    <div class="terminal-title">victor@portfolio:~</div>
+                </div>
+                <div class="terminal-body" id="terminalBody">
+                    <div class="terminal-welcome translatable" data-pt="Bem-vindo ao meu terminal! Digite 'help' para ver os comandos disponíveis." data-en="Welcome to my terminal! Type 'help' to see available commands.">Bem-vindo ao meu terminal! Digite 'help' para ver os comandos disponíveis.</div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">visitor@portfolio:~$</span>
+                        <input type="text" class="terminal-input" id="terminalInput" autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Experiência Section -->
