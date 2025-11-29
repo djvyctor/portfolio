@@ -175,13 +175,13 @@ if (terminalInput && terminalBody) {
 <span class="success">Lendo pacotes... Pronto</span>
 <span class="success">Acesso liberado!</span>
 
-Olá! Sou Victor Medeiros, desenvolvedor e entusiasta de segurança cibernética.
+Olá! Sou Victor Medeiros, desenvolvedor backend com foco em segurança cibernética.
 
 Minha jornada na tecnologia começou com a curiosidade de entender como as coisas funcionam 
 por baixo dos panos. Hoje, combino programação e segurança para criar soluções robustas e seguras.
 
 Especialidades:
-  • Desenvolvimento Full-Stack
+  • Desenvolvimento Backend
   • Segurança de Aplicações
   • Pentesting & Ethical Hacking
   • DevSecOps
@@ -194,15 +194,15 @@ Sempre em busca de novos desafios e aprendizados!`,
   <span class="info">habilidades/</span>
   <span class="info">contato/</span>`,
             whoami: `<span class="success">Victor Medeiros</span>
-Cybersecurity Enthusiast | Full-Stack Developer
+Cybersecurity | Backend
 GitHub: github.com/djvyctor
 LinkedIn: linkedin.com/in/victordevsec`,
             skills: `Habilidades principais:
-  <span class="success">✓</span> Python, JavaScript, FastAPI
+  <span class="success">✓</span> Python, FastAPI
   <span class="success">✓</span> Segurança de Aplicações
   <span class="success">✓</span> Linux, Docker, Git
   <span class="success">✓</span> Pentesting & CTFs
-  <span class="success">✓</span> HTML, CSS, React`,
+  <span class="success">✓</span> SQL, PostgreSQL`,
             clear: 'CLEAR',
             error: (cmd) => `<span class="error">bash: ${cmd}: comando não encontrado</span>
 Digite 'help' para ver os comandos disponíveis.`
@@ -219,13 +219,13 @@ Digite 'help' para ver os comandos disponíveis.`
 <span class="success">Reading packages... Done</span>
 <span class="success">Access granted!</span>
 
-Hello! I'm Victor Medeiros, a developer and cybersecurity enthusiast.
+Hello! I'm Victor Medeiros, a backend developer focused on cybersecurity.
 
 My journey in technology started with curiosity about how things work under the hood.
 Today, I combine programming and security to create robust and secure solutions.
 
 Specialties:
-  • Full-Stack Development
+  • Backend Development
   • Application Security
   • Pentesting & Ethical Hacking
   • DevSecOps
@@ -238,15 +238,15 @@ Always seeking new challenges and learning opportunities!`,
   <span class="info">skills/</span>
   <span class="info">contact/</span>`,
             whoami: `<span class="success">Victor Medeiros</span>
-Cybersecurity Enthusiast | Full-Stack Developer
+Backend Developer | Cybersecurity
 GitHub: github.com/djvyctor
 LinkedIn: linkedin.com/in/victordevsec`,
             skills: `Main skills:
-  <span class="success">✓</span> Python, JavaScript, FastAPI
+  <span class="success">✓</span> Python, FastAPI
   <span class="success">✓</span> Application Security
   <span class="success">✓</span> Linux, Docker, Git
   <span class="success">✓</span> Pentesting & CTFs
-  <span class="success">✓</span> HTML, CSS, React`,
+  <span class="success">✓</span> SQL, PostgreSQL`,
             clear: 'CLEAR',
             error: (cmd) => `<span class="error">bash: ${cmd}: command not found</span>
 Type 'help' to see available commands.`

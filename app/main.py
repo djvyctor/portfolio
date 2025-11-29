@@ -12,8 +12,8 @@ app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
 MEUS_DADOS = {
     "nome": "Victor Medeiros",
-    "titulo": "Cybersecurity and Developer",
-    "sobre": "Inovando com código. Protegendo com propósito.",
+    "titulo": "Backend Developer & Cybersecurity",
+    "sobre": "Inovando com código. Protegendo com propósito."
 }
 
 @app.get("/")
