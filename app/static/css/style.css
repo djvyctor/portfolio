@@ -659,6 +659,250 @@ section:not(#hero) {
     height: 16px;
 }
 
+/* Skills Section */
+#habilidades .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: block !important;
+}
+
+#habilidades .section-title {
+    text-align: left !important;
+    margin-bottom: 1rem;
+}
+
+.skills-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-style: italic;
+    margin-bottom: 2.5rem;
+    text-align: left;
+    opacity: 0.8;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.skill-item {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.skill-item:nth-child(1) { animation-delay: 0.1s; }
+.skill-item:nth-child(2) { animation-delay: 0.2s; }
+.skill-item:nth-child(3) { animation-delay: 0.3s; }
+.skill-item:nth-child(4) { animation-delay: 0.4s; }
+.skill-item:nth-child(5) { animation-delay: 0.5s; }
+.skill-item:nth-child(6) { animation-delay: 0.6s; }
+.skill-item:nth-child(7) { animation-delay: 0.7s; }
+.skill-item:nth-child(8) { animation-delay: 0.8s; }
+
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.skill-name {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.skill-percentage {
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+.skill-bar {
+    width: 100%;
+    height: 12px;
+    background-color: rgba(26, 26, 26, 0.8);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.skill-progress {
+    height: 100%;
+    background: linear-gradient(90deg, 
+        rgba(0, 255, 136, 0.8) 0%, 
+        rgba(0, 255, 136, 1) 50%, 
+        rgba(0, 255, 136, 0.8) 100%);
+    border-radius: 6px;
+    width: 0;
+    transition: width 1.5s ease-in-out;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.3) 50%, 
+        transparent 100%);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.skill-item:hover .skill-progress {
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.8);
+}
+
+/* Contact Section */
+#contato .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: block !important;
+}
+
+#contato .section-title {
+    text-align: center !important;
+    margin-bottom: 1rem;
+}
+
+.contact-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.contact-card {
+    background-color: rgba(26, 26, 26, 0.8);
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.contact-card:nth-child(1) { animation-delay: 0.1s; }
+.contact-card:nth-child(2) { animation-delay: 0.2s; }
+.contact-card:nth-child(3) { animation-delay: 0.3s; }
+.contact-card:nth-child(4) { animation-delay: 0.4s; }
+
+.contact-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+}
+
+.contact-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.2));
+    border-radius: 50%;
+    color: var(--accent);
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover .contact-icon {
+    background: var(--accent);
+    color: var(--bg-dark);
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+    transform: scale(1.1);
+}
+
+.contact-name {
+    color: var(--text-primary);
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.contact-username {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+}
+
+.contact-link {
+    color: var(--accent);
+    font-size: 0.95rem;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover .contact-link {
+    transform: translateX(5px);
+}
+
+/* Footer */
+footer {
+    background-color: rgba(13, 13, 13, 0.95);
+    border-top: 1px solid rgba(0, 255, 136, 0.3);
+    padding: 2rem 0;
+    margin-top: 4rem;
+}
+
+footer .container {
+    display: block !important;
+    text-align: center;
+}
+
+.footer-text {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-highlight {
+    color: var(--accent);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+.footer-copyright {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
 /* Terminal Styles */
 .terminal-container {
     max-width: 900px;
@@ -884,5 +1128,49 @@ section p {
 
     .project-description {
         font-size: 0.9rem;
+    }
+
+    /* Skills responsive */
+    .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .skill-name {
+        font-size: 1rem;
+    }
+
+    .skill-percentage {
+        font-size: 0.9rem;
+    }
+
+    .skill-bar {
+        height: 10px;
+    }
+
+    /* Contact responsive */
+    .contact-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .contact-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+    .contact-name {
+        font-size: 1.2rem;
+    }
+
+    .contact-subtitle {
+        font-size: 1rem;
     }
 }

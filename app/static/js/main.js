@@ -27,7 +27,18 @@ navLinks.forEach(link => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        
+        // Special handling for hero section (go to top)
+        if (href === '#hero') {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            return;
+        }
+        
+        const target = document.querySelector(href);
         if (target) {
             target.scrollIntoView({
                 behavior: 'smooth',
@@ -490,3 +501,29 @@ if (canvas) {
         canvas.height = window.innerHeight;
     });
 }
+
+// Skills Progress Animation
+const animateSkills = () => {
+    const skillsSection = document.getElementById('habilidades');
+    if (!skillsSection) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const progressBars = document.querySelectorAll('.skill-progress');
+                progressBars.forEach(bar => {
+                    const progress = bar.getAttribute('data-progress');
+                    setTimeout(() => {
+                        bar.style.width = progress + '%';
+                    }, 200);
+                });
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    observer.observe(skillsSection);
+};
+
+// Initialize skills animation
+animateSkills();
